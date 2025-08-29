@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Bảng Điểm Pickleball 🎾</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Montserrat&family=Open+Sans&family=Lobster&family=Raleway&family=Oswald&family=Playfair+Display&family=Quicksand&family=Pacifico&family=Inconsolata&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: #f0f4f8;
+      padding: 20px;
+      color: #2c3e50;
+    }
+
+    h2 {
+      font-family: 'Montserrat', sans-serif;
+      margin-bottom: 10px;
+    }
+
+    select {
+      padding: 6px;
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+
+    table {
+      width: 100%;
+      max-width: 500px;
+      border-collapse: collapse;
+      background: #fff;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 12px;
+      text-align: center;
+      font-size: 18px;
+    }
+
+    th {
+      background-color: #3498db;
+      color: white;
+      font-family: 'Oswald', sans-serif;
+    }
+
+    td {
+      font-family: 'Quicksand', sans-serif;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #2ecc71;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      margin-right: 10px;
+      margin-bottom: 10px;
+      font-family: 'Raleway', sans-serif;
+    }
+
+    button:hover {
+      background-color: #27ae60;
+    }
+
+    .font-sample {
+      margin-top: 30px;
+    }
+
+    .font-sample p {
+      margin: 5px 0;
+      font-size: 16px;
+    }
+
+    .font-1 { font-family: 'Roboto', sans-serif; }
+    .font-2 { font-family: 'Montserrat', sans-serif; }
+    .font-3 { font-family: 'Open Sans', sans-serif; }
+    .font-4 { font-family: 'Lobster', cursive; }
+    .font-5 { font-family: 'Raleway', sans-serif; }
+    .font-6 { font-family: 'Oswald', sans-serif; }
+    .font-7 { font-family: 'Playfair Display', serif; }
+    .font-8 { font-family: 'Quicksand', sans-serif; }
+    .font-9 { font-family: 'Pacifico', cursive; }
+    .font-10 { font-family: 'Inconsolata', monospace; }
+  </style>
+</head>
+<body>
+
+  <h2>Bảng Điểm Pickleball 🎾</h2>
+
+  <label for="mode">Chọn chế độ:</label>
+  <select id="mode" onchange="resetGame()">
+    <option value="singles">Đánh đơn</option>
+    <option value="doubles">Đánh đôi</option>
+  </select>
+
+  <table>
+    <tr>
+      <th>Đội</th>
+      <th>Người giao</th>
+      <th>Trái banh</th>
+      <th>Điểm</th>
+    </tr>
+    <tr>
+      <td>Đội A</td>
+      <td id="serverA">—</td>
+      <td id="serveA">—</td>
+      <td id="scoreA">0</td>
+    </tr>
+    <tr>
+      <td>Đội B</td>
+      <td id="serverB">—</td>
+      <td id="serveB">—</td>
+      <td id="scoreB">0</td>
+    </tr>
+  </table>
+
+  <button onclick="addPoint('A')">+1 Đội A</button>
+  <button onclick="addPoint('B')">+1 Đội B</button>
+  <button onclick="switchServe()">Chuyển lượt giao</button>
+  <button onclick="resetGame()">🔄 Reset</button>
+
+  <div class="font-sample">
+    <h3>🔤 Mẫu font chữ</h3>
+    <p class="font-1">Roboto - Hiện đại, dễ đọc</p>
+    <p class="font-2">Montserrat - Gọn gàng, chuyên nghiệp</p>
+    <p class="font-3">Open Sans - Phổ biến, thân thiện</p>
+    <p class="font-4">Lobster - Viết tay nghệ thuật</p>
+    <p class="font-5">Raleway - Mảnh mai, thanh lịch</p>
+    <p class="font-6">Oswald - Mạnh mẽ, rõ ràng</p>
+    <p class="font-7">Playfair Display - Cổ điển, sang trọng</p>
+    <p class="font-8">Quicksand - Trẻ trung, mềm mại</p>
+    <p class="font-9">Pacifico - Viết tay vui nhộn</p>
+    <p class="font-10">Inconsolata - Monospace cho coder</p>
+  </div>
+
+  <script>
+    let mode = 'singles';
+    let serveState = 'A';
+    let scoreA = 0;
+    let scoreB = 0;
+
+    function updateServeDisplay() {
+      const serveA = document.getElementById('serveA');
+      const serveB = document.getElementById('serveB');
+      const serverA = document.getElementById('serverA');
+      const serverB = document.getElementById('serverB');
+
+      if (mode === 'singles') {
+        serveA.textContent = serveState === 'A' ? '🎾' : '—';
+        serveB.textContent = serveState === 'B' ? '🎾' : '—';
+        serverA.textContent = serveState === 'A' ? 'A' : '—';
+        serverB.textContent = serveState === 'B' ? 'B' : '—';
+      } else {
+        const serveIcons = {
+          'A1': '🎾',
+          'A2': '🎾🎾',
+          'B1': '🎾',
+          'B2': '🎾🎾'
+        };
+        const serverNames = {
+          'A1': 'A1',
+          'A2': 'A2',
+          'B1': 'B1',
+          'B2': 'B2'
+        };
+        serveA.textContent = serveState.startsWith('A') ? serveIcons[serveState] : '—';
+        serveB.textContent = serveState.startsWith('B') ? serveIcons[serveState] : '—';
+        serverA.textContent = serveState.startsWith('A') ? serverNames[serveState] : '—';
+        serverB.textContent = serveState.startsWith('B') ? serverNames[serveState] : '—';
+      }
+    }
+
+    function switchServe() {
+      if (mode === 'singles') {
+        serveState = serveState === 'A' ? 'B' : 'A';
+      } else {
+        const nextServe = {
+          'A1': 'A2',
+          'A2': 'B1',
+          'B1': 'B2',
+          'B2': 'A1'
+        };
+        serveState = nextServe[serveState] || 'A1';
+      }
+      updateServeDisplay();
+    }
+
+    function addPoint(team) {
+      if (team === 'A') scoreA++;
+      else scoreB++;
+      document.getElementById('scoreA').textContent = scoreA;
+      document.getElementById('scoreB').textContent = scoreB;
+    }
+
+    function resetGame() {
+      mode = document.getElementById('mode').value;
+      serveState = mode === 'singles' ? 'A' : 'A1';
+      scoreA = 0;
+      scoreB = 0;
+      document.getElementById('scoreA').textContent = scoreA;
+      document.getElementById('scoreB').textContent = scoreB;
+      updateServeDisplay();
+    }
+
+    // Khởi tạo ban đầu
+    resetGame();
+  </
